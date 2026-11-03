@@ -52,15 +52,15 @@
 
 ## 补充项目：软件工程实践
 
-### 小禾校园搭子 | 校园服务微信小程序
+### [小禾校园搭子 | 校园服务微信小程序](https://github.com/chenrongxu1010-web/campus-assistant-prototype)
 
 `JavaScript` · `Python / FastAPI` · `MySQL` · `微信云托管`
 
-- 已有版本发布，提供课表管理、校园信息与美食查询等功能，参与云托管部署及版本提审。
+- 已有版本发布；2026-11-01 后台截图显示累计用户 **326**，当日访问人数 **23**。项目资料覆盖课表管理、校园信息、美食查询与课程复习，近期本地改动与线上版本的差异见项目说明。
 - 负责功能范围、优先级与资料输入，借助 AI 协作编写代码与回归测试，通过手机体验和模拟器核对功能。
 - 协同修复课表保存成功但返回失败引发重复新增的问题，将保存状态与跳转重试分离，保留存储失败时的表单。
 
-[查看早期交互原型](https://github.com/chenrongxu1010-web/campus-assistant-prototype) · 此仓库用于展示早期产品探索，不等同于当前已发布小程序的源码。
+[查看产品介绍、界面预览与工程案例 →](https://github.com/chenrongxu1010-web/campus-assistant-prototype) · 微信搜索“小禾校园搭子”体验已发布版本。公开仓库为项目展示资料。
 
 ### [自动化测试与日志分析工具](https://github.com/chenrongxu1010-web/auto-test-log-analyzer)
 
