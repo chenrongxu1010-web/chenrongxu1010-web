@@ -5,13 +5,13 @@
 **求职状态：地点不限 · 可随时到岗 · 可全职实习 6 个月**
 联系邮箱：[Rongxu1126@foxmail.com](mailto:Rongxu1126@foxmail.com)
 
-围绕 **C / STM32 外设开发、模块化设计与软硬件联调**积累实践。目前完成了环境监测终端的裸机开发，并在独立实验中学习 FreeRTOS，当前进度为事件标志（Event Flags）。
+围绕 **C / STM32 外设开发、模块化设计与软硬件联调**积累实践。环境监测终端已从裸机演进为 FreeRTOS 五任务工程，使用独立消息队列、I2C Mutex 和按键信号量组织业务，持续完善可靠性验证。
 
 ## 主打项目：STM32 环境监测与报警终端
 
 **[查看项目与构建说明 →](https://github.com/chenrongxu1010-web/stm32-environment-monitor)**
 
-`C` · `STM32F401RE` · `HAL` · `STM32CubeIDE` · `I2C` · `SPI` · `UART` · `EXTI`
+`C` · `STM32F401RE` · `HAL` · `FreeRTOS / CMSIS-RTOS2` · `STM32CubeIDE` · `I2C` · `SPI` · `UART` · `EXTI`
 
 基于 NUCLEO-F401RE，串联温湿度采集、数据显示、报警判断及参数存储，重点实践外设通信和故障定位。
 
@@ -19,10 +19,10 @@
 | --- | --- |
 | 采集与显示 | 通过 I2C 驱动 AHT20 与 SSD1306，实现温湿度采集、OLED 显示及 UART 调试输出。[主程序](https://github.com/chenrongxu1010-web/stm32-environment-monitor/blob/main/Core/Src/main.c) |
 | Flash 参数存储 | W25Q64 驱动包含 JEDEC ID 读取、扇区擦除、页编程及数据读取；配置模块支持阈值保存、上电加载与合法性检查。[Flash 驱动](https://github.com/chenrongxu1010-web/stm32-environment-monitor/blob/main/Core/Src/w25q64.c) · [配置模块](https://github.com/chenrongxu1010-web/stm32-environment-monitor/blob/main/Core/Src/config.c) |
-| 模块划分与按键处理 | 分离传感器、显示、Flash、配置及报警模块；EXTI 回调设置按键事件，由主循环处理蜂鸣器使能切换。 |
-| 软硬件联调 | 结合 UART 日志、HAL 返回值、状态寄存器及 PulseView SPI 解码逐层排查；项目记录了 W25Q64 ID 异常最终定位到杜邦线接触问题的过程。 |
+| 模块划分与按键处理 | 分离传感器、显示、Flash、配置及报警模块；EXTI 通过二值信号量通知 ButtonTask，切换蜂鸣器使能。 |
+| 软硬件联调 | 结合 UART 日志、HAL 返回值、状态寄存器及 PulseView SPI 解码逐层排查；保留 SPI 波形与历史接线排查记录，后续偶发 Flash 异常的最终根因仍待验证。 |
 
-**当前边界：** 仓库仍为裸机工程；报警恢复条件存在已记录的缺陷，滞回边界验证与配置可靠性仍需完善。FreeRTOS 学习实验尚未集成到环境监测业务中。
+**当前进展：** 五任务工程、三路容量为 5 的队列及 OR 触发 / AND 恢复逻辑已纳入仓库；正常、队列压力和 Flash 只读捕获模式均构建通过。Flash 默认隔离，压力测试、掉电持久化和长期稳定性仍待真机验证。
 
 ### 实物与调试记录
 
@@ -46,9 +46,9 @@
 | C 语言 | 指针、数组、结构体、位运算；多文件工程、头文件管理及模块接口封装。 |
 | STM32 | 基于 STM32F401RE 与 HAL 进行外设开发，使用 CubeMX / CubeIDE、ST-LINK 烧录与调试。 |
 | 调试与工具 | UART 日志、USB 逻辑分析仪与 PulseView；WSL / Ubuntu 下使用 GCC、GDB；Git，Python / Shell 基础。 |
-| FreeRTOS（学习中） | 已进行任务创建与优先级抢占实验，学习任务状态、阻塞与消息队列；目前学到 Event Flags，继续通过独立实验理解任务通信与同步。 |
+| FreeRTOS | 五任务、消息队列、Mutex、Semaphore、栈高水位与投递失败计数已用于项目；Event Flags 仍未用于主项目业务同步。 |
 
-接下来先完善裸机报警恢复逻辑和边界验证，再结合学习进度推进 FreeRTOS 任务划分与业务集成。
+下一步验证报警边界与并发访问、队列压力恢复、栈/堆余量和 Flash 可靠性，补齐持续运行的实机记录。
 
 ## 补充项目：软件工程实践
 
